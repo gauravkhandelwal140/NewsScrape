@@ -14,3 +14,7 @@ class NewsScrapeSerializer(serializers.ModelSerializer):
     class Meta:
         model=ScrapeNews
         fields='__all__'
+
+class AllNews(serializers.Serializer):
+    news=NewsSerializer(many=True)
+    scrapenews=NewsScrapeSerializer(many=True)

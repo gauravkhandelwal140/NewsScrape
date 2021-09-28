@@ -1,14 +1,14 @@
 from celery import shared_task
-from django.http import HttpResponse
-from django.shortcuts import render
-# Create your views here.
-from .models import *
-import datetime
+# from django.http import HttpResponse
+# from django.shortcuts import render
+# # Create your views here.
+# from .models import *
+# import datetime
 from .serializers import *
 
 import requests
 from bs4 import BeautifulSoup
-from rest_framework import viewsets
+# from rest_framework import viewsets
 
 @shared_task
 def get_scripe_data():
@@ -34,10 +34,8 @@ def get_scripe_data():
                 link =''
             try:
                 pubDate = news.pubDate.text.split(',')[1].strip()
-                print(pubDate)
-                print(type(pubDate))
                 pubDate=datetime.datetime.strptime(pubDate, '%d %b %Y %H:%M:%S %z')
-                print('after',type(pubDate))
+
             except:
                 pubDate = ''
             try:
@@ -51,9 +49,8 @@ def get_scripe_data():
                 title=''
             try:
                 sn =ScrapeNews.objects.create(guid=guid,title=title,pubDate=pubDate ,description=description, link=link,symbol=symbol)
-                print(sn)
+
                 sn.save()
             except:
                 continue
-
-    return HttpResponse('yes')
+    return 'yes'

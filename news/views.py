@@ -46,3 +46,10 @@ class ScrapeNewsViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = super(ScrapeNewsViewSet, self).filter_queryset(queryset)
         return queryset.order_by('pubDate')
 
+class AllNewsViewSet(viewsets.ViewSet):
+
+    def list(self,request):
+        queryset1=News.objects.all()
+        queryset=ScrapeNews.objects.all()
+        serializer=AllNews({'news':queryset1,'scrapenews':queryset})
+        return Response(serializer.data)

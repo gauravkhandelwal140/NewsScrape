@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'django_celery_results',
     'django_celery_beat',
     'news'
 
@@ -46,10 +47,10 @@ INSTALLED_APPS = [
 
 DATABASES = {
    'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'postgres',
-       'USER': 'postgres',
-       'PASSWORD': '1234',
+       'ENGINE': 'django.db.backends.postgresql', #
+       'NAME': 'postgres', # enter your postgres database name
+       'USER': 'postgres', # enter your postgres user name
+       'PASSWORD': '1234', # enter your postgres password
        'HOST': 'localhost',
        'PORT': '5432',
    }
@@ -95,7 +96,9 @@ WSGI_APPLICATION = 'NewsScrape.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-#
+# if you don't have postgresql installed just uncomment this part for test after uncomment this path
+# run following command 1: python manage.py makemigrations, 2, python manage.py migrate, 3, python manage.py createsuperuser
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -137,6 +140,16 @@ USE_L10N = True
 USE_TZ = True
 
 
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERY_RESULT_BACKEND = 'django-db'
+
+#CELERY BEAT
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -146,3 +159,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# after open admin you can se all apps like celery and news ,scrapenews
+# for testing purposes i can run scraping function directly
